@@ -49,7 +49,7 @@ class DistancePerTime: Form
 
 		distanceTitleLabel = CreateControl<Label>(mainPanel, 0, 0, panelWidth, 1);
 		distanceTitleLabel.Font = normalFont;
-		distanceTitleLabel.Text = "次のポイントまでの距離";
+		distanceTitleLabel.Text = "次のポイントまでの距離は";
 		distanceTitleLabel.TextAlign = ContentAlignment.MiddleLeft;
 		distanceLabel = CreateControl<Label>(mainPanel, 0, 1, panelWidth, 2);
 		distanceLabel.Font = doubleFont;
@@ -58,7 +58,7 @@ class DistancePerTime: Form
 
 		timeTitleLabel = CreateControl<Label>(mainPanel, 0, 3, panelWidth, 1);
 		timeTitleLabel.Font = normalFont;
-		timeTitleLabel.Text = "次のポイントまでの時間";
+		timeTitleLabel.Text = "次のポイントまでの時間は";
 		timeTitleLabel.TextAlign = ContentAlignment.MiddleLeft;
 		timeLabel = CreateControl<Label>(mainPanel, 0, 4, panelWidth, 2);
 		timeLabel.Font = doubleFont;
