@@ -29,7 +29,7 @@ class DistancePerTime: Form
 	private Label distanceTitleLabel, distanceLabel;
 	private Label timeTitleLabel, timeLabel;
 	private Label distancePerTimeTitleLabel, distancePerTimeLabel;
-	private Label kmPerHourTitleLabel, kmPerHourlabel;
+	private Label kmPerHourTitleLabel, kmPerHourLabel;
 	private Label currentSpeedTitleLabel, currentSpeedLabel;
 	private Label timingPredictionTitleLabel, timingPredictionLabel;
 
@@ -78,10 +78,10 @@ class DistancePerTime: Form
 		kmPerHourTitleLabel.Font = normalFont;
 		kmPerHourTitleLabel.Text = "すなわち";
 		kmPerHourTitleLabel.TextAlign = ContentAlignment.MiddleLeft;
-		kmPerHourlabel = CreateControl<Label>(mainPanel, 0, 10, panelWidth, 2);
-		kmPerHourlabel.Font = doubleFont;
-		kmPerHourlabel.Text = "###.# km/h";
-		kmPerHourlabel.TextAlign = ContentAlignment.MiddleRight;
+		kmPerHourLabel = CreateControl<Label>(mainPanel, 0, 10, panelWidth, 2);
+		kmPerHourLabel.Font = doubleFont;
+		kmPerHourLabel.Text = "###.# km/h";
+		kmPerHourLabel.TextAlign = ContentAlignment.MiddleRight;
 
 		currentSpeedTitleLabel = CreateControl<Label>(mainPanel, 0, 12, panelWidth, 1);
 		currentSpeedTitleLabel.Font = normalFont;
