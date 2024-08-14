@@ -5,11 +5,13 @@ using TrainCrew;
 
 class DistancePerTime: Form
 {
-	public static void Main()
+	public static void Main(string[] args)
 	{
+		bool englishMode = args.Length > 0 && "--english".Equals(args[0]);
+
 		Application.EnableVisualStyles();
 		Application.SetCompatibleTextRenderingDefault(false);
-		Application.Run(new DistancePerTime());
+		Application.Run(new DistancePerTime(englishMode));
 	}
 
 	private const int fontSize = 16, gridSize = 22;
@@ -24,6 +26,7 @@ class DistancePerTime: Form
 		return control;
 	}
 
+	private bool EnglishMode;
 	private Panel mainPanel;
 
 	private Label distanceTitleLabel, distanceLabel;
@@ -33,14 +36,15 @@ class DistancePerTime: Form
 	private Label currentSpeedTitleLabel, currentSpeedLabel;
 	private Label timingPredictionTitleLabel, timingPredictionLabel;
 
-	public DistancePerTime()
+	public DistancePerTime(bool englishMode)
 	{
+		EnglishMode = englishMode;
 		float panelWidth = 11;
 		string fontName = "MS UI Gothic";
 		Font normalFont = new Font(fontName, fontSize, GraphicsUnit.Pixel);
 		Font doubleFont = new Font(fontName, fontSize * 2, GraphicsUnit.Pixel);
 		this.FormBorderStyle = FormBorderStyle.FixedSingle;
-		this.Text = "距離÷時間";
+		this.Text = EnglishMode ? "Distance per Time" : "距離÷時間";
 		this.MaximizeBox = false;
 		this.ClientSize = new Size((int)(gridSize * (panelWidth + 1)), gridSize * 19);
 		SuspendLayout();
@@ -49,7 +53,7 @@ class DistancePerTime: Form
 
 		distanceTitleLabel = CreateControl<Label>(mainPanel, 0, 0, panelWidth, 1);
 		distanceTitleLabel.Font = normalFont;
-		distanceTitleLabel.Text = "次のポイントまでの距離は";
+		distanceTitleLabel.Text = EnglishMode ? "Distance to the next point:" : "次のポイントまでの距離は";
 		distanceTitleLabel.TextAlign = ContentAlignment.MiddleLeft;
 		distanceLabel = CreateControl<Label>(mainPanel, 0, 1, panelWidth, 2);
 		distanceLabel.Font = doubleFont;
@@ -58,16 +62,16 @@ class DistancePerTime: Form
 
 		timeTitleLabel = CreateControl<Label>(mainPanel, 0, 3, panelWidth, 1);
 		timeTitleLabel.Font = normalFont;
-		timeTitleLabel.Text = "次のポイントまでの時間は";
+		timeTitleLabel.Text = EnglishMode ? "Time to the next point:" : "次のポイントまでの時間は";
 		timeTitleLabel.TextAlign = ContentAlignment.MiddleLeft;
 		timeLabel = CreateControl<Label>(mainPanel, 0, 4, panelWidth, 2);
 		timeLabel.Font = doubleFont;
-		timeLabel.Text = "#### 秒";
+		timeLabel.Text = EnglishMode ? "#### s" : "#### 秒";
 		timeLabel.TextAlign = ContentAlignment.MiddleRight;
 
 		distancePerTimeTitleLabel = CreateControl<Label>(mainPanel, 0, 6, panelWidth, 1);
 		distancePerTimeTitleLabel.Font = normalFont;
-		distancePerTimeTitleLabel.Text = "この距離をこの時間で割ると";
+		distancePerTimeTitleLabel.Text = EnglishMode ? "This distance per this time:" : "この距離をこの時間で割ると";
 		distancePerTimeTitleLabel.TextAlign = ContentAlignment.MiddleLeft;
 		distancePerTimeLabel = CreateControl<Label>(mainPanel, 0, 7, panelWidth, 2);
 		distancePerTimeLabel.Font = doubleFont;
@@ -76,7 +80,7 @@ class DistancePerTime: Form
 
 		kmPerHourTitleLabel = CreateControl<Label>(mainPanel, 0, 9, panelWidth, 1);
 		kmPerHourTitleLabel.Font = normalFont;
-		kmPerHourTitleLabel.Text = "すなわち";
+		kmPerHourTitleLabel.Text = EnglishMode ? "In another representation:" : "すなわち";
 		kmPerHourTitleLabel.TextAlign = ContentAlignment.MiddleLeft;
 		kmPerHourLabel = CreateControl<Label>(mainPanel, 0, 10, panelWidth, 2);
 		kmPerHourLabel.Font = doubleFont;
@@ -85,7 +89,7 @@ class DistancePerTime: Form
 
 		currentSpeedTitleLabel = CreateControl<Label>(mainPanel, 0, 12, panelWidth, 1);
 		currentSpeedTitleLabel.Font = normalFont;
-		currentSpeedTitleLabel.Text = "一方、現在の速度は";
+		currentSpeedTitleLabel.Text = EnglishMode ? "Your current speed:" : "一方、現在の速度は";
 		currentSpeedTitleLabel.TextAlign = ContentAlignment.MiddleLeft;
 		currentSpeedLabel = CreateControl<Label>(mainPanel, 0, 13, panelWidth, 2);
 		currentSpeedLabel.Font = doubleFont;
@@ -94,11 +98,11 @@ class DistancePerTime: Form
 
 		timingPredictionTitleLabel = CreateControl<Label>(mainPanel, 0, 15, panelWidth, 1);
 		timingPredictionTitleLabel.Font = normalFont;
-		timingPredictionTitleLabel.Text = "この速度で次のポイントに着くのは";
+		timingPredictionTitleLabel.Text = EnglishMode ? "You'll arrive at the next point:" : "この速度で次のポイントに着くのは";
 		timingPredictionTitleLabel.TextAlign = ContentAlignment.MiddleLeft;
 		timingPredictionLabel = CreateControl<Label>(mainPanel, 0, 16, panelWidth, 2);
 		timingPredictionLabel.Font = doubleFont;
-		timingPredictionLabel.Text = "### 秒延";
+		timingPredictionLabel.Text = EnglishMode ? "### sec. Late" : "### 秒延";
 		timingPredictionLabel.TextAlign = ContentAlignment.MiddleRight;
 
 		ResumeLayout();
@@ -171,7 +175,7 @@ class DistancePerTime: Form
 		if (timeToArrive.HasValue)
 		{
 			double time = timeToArrive.Value.TotalSeconds - trainState.NowTime.TotalSeconds;
-			timeLabel.Text = string.Format("{0} 秒", Math.Ceiling(time));
+			timeLabel.Text = string.Format("{0} {1}", Math.Ceiling(time), EnglishMode ? "s" : "秒");
 			double distancePerTime = time <= 0 ? Double.PositiveInfinity : distance / time;
 			if (distancePerTime >= 1000)
 			{
@@ -188,27 +192,27 @@ class DistancePerTime: Form
 			double etdSeconds = Math.Floor(estimatedTimeDifference);
 			if (etdSeconds >= 1000)
 			{
-				timingPredictionLabel.Text = "∞ 秒延";
+				timingPredictionLabel.Text = EnglishMode ? "∞ sec. Late" : "∞ 秒延";
 			}
 			else if (etdSeconds >= 1)
 			{
-				timingPredictionLabel.Text = string.Format("{0} 秒延", etdSeconds);
+				timingPredictionLabel.Text = string.Format("{0} {1}", etdSeconds, EnglishMode ? "sec. Late" : "秒延");
 			}
 			else if (etdSeconds <= -1)
 			{
-				timingPredictionLabel.Text = string.Format("{0} 秒早", -etdSeconds);
+				timingPredictionLabel.Text = string.Format("{0} {1}", -etdSeconds, EnglishMode ? "sec. Early" : "秒早");
 			}
 			else
 			{
-				timingPredictionLabel.Text = "定時";
+				timingPredictionLabel.Text = EnglishMode ? "On time" : "定時";
 			}
 		}
 		else
 		{
-			timeLabel.Text = "#### 秒";
+			timeLabel.Text = EnglishMode ? "#### s" : "#### 秒";
 			distancePerTimeLabel.Text = "##.# m/s";
 			kmPerHourLabel.Text = "###.# km/h";
-			timingPredictionLabel.Text = "### 秒延";
+			timingPredictionLabel.Text = EnglishMode ? "### sec. Late" : "### 秒延";
 		}
 	}
 }
