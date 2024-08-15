@@ -7,6 +7,7 @@ OPTIONS= \
 	/reference:TrainCrewInput.dll
 
 SOURCES= \
+	AssemblyInfo.cs \
 	DistancePerTime.cs
 
 $(TARGET): $(SOURCES)
