@@ -4,6 +4,7 @@ OPTIONS= \
 	/optimize+ \
 	/warn:4 \
 	/codepage:65001 \
+	/win32icon:distance_per_time.ico \
 	/reference:TrainCrewInput.dll
 
 SOURCES= \

@@ -46,6 +46,7 @@ class DistancePerTime: Form
 		this.FormBorderStyle = FormBorderStyle.FixedSingle;
 		this.Text = EnglishMode ? "Distance per Time" : "距離÷時間";
 		this.MaximizeBox = false;
+		this.Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath);
 		this.ClientSize = new Size((int)(gridSize * (panelWidth + 1)), gridSize * 19);
 		SuspendLayout();
 
